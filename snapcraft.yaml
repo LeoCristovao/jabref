@@ -4,20 +4,19 @@ name: jabref
 version: '4.0-dev'
 summary: Bibliography manager
 icon: src/main/resources/images/external/JabRef-icon-128.png
-description: |
-  JabRef is an open source bibliography reference manager. The native file format used by JabRef is BibTeX, the standard
-  LaTeX bibliography format.
+description: JabRef is an open source bibliography reference manager. The native file format used by JabRef is BibTeX, the standard LaTeX bibliography format.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 apps:
    jabref:
-     command: java -jar $SNAP/jar/JabRef-4.0.0-dev-fat.jar
+     command: java -jar $SNAP/jar/JabRef-4.0.0-dev.jar
 
 parts:
   jabref:
-    stage-packages: [openjfx]
     plugin: gradle
     source: .
-    gradle-options: [shadowJar]
+    stage-packages: [openjfx]
+    gradle-options: [releaseJar]
+    gradle-output-dir: 'build/releases'

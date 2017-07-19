@@ -121,7 +121,6 @@ dependencies {
     compile 'de.jensd:fontawesomefx-materialdesignfont:1.7.22-4'
     compile 'org.fxmisc.richtext:richtextfx:0.7-M5'
 
-
     compile 'commons-logging:commons-logging:1.2'
 
     compile 'org.jsoup:jsoup:1.10.3'
@@ -405,19 +404,24 @@ task release(dependsOn: ["media", "releaseJar"]) {
     description 'Creates a release for all target platforms.'
 }
 
-task releaseJar(dependsOn: "shadowJar") {
-    group = 'JabRef - Release'
-    description "Creates a Jar release."
-
+task moveReleasedJar(dependsOn: "shadowJar") {
     doLast {
         copy {
             from("$buildDir/libs/JabRef-${project.version}-fat.jar")
             into("$buildDir/releases")
-
             rename { String fileName ->
                 fileName.replace('-fat', '')
             }
         }
+    }
+}
+
+task releaseJar(dependsOn: "moveReleasedJar", type:Exec) {
+    group = 'JabRef - Release'
+    description "Creates a Jar release."
+
+    if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
+        commandLine 'chmod', '755', "$buildDir/releases/JabRef-${project.version}.jar"
     }
 }
 
