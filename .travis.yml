@@ -53,7 +53,7 @@ after_success:
   - ./gradlew jacocoTestReport
   - bash <(curl -s https://codecov.io/bash)
   - openssl aes-256-cbc -K $encrypted_5f91cda8b19d_key -iv $encrypted_5f91cda8b19d_iv -in .snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
-  - if [ "$TRAVIS_BRANCH" == "snapcraft" ] && [ "$TEST_SUITE" == "checkstyle" ]; then docker run -v $(pwd):$(pwd) -t ubuntu:xenial sh -c "apt update -qq && apt install snapcraft -y && cd $(pwd) && LANG=C.UTF-8 LC_ALL=C.UTF-8 snapcraft && LANG=C.UTF-8 LC_ALL=C.UTF-8 snapcraft push *.snap --release edge"; fi
+  - if [ "$TRAVIS_BRANCH" == "snapcraft" ] && [ "$TEST_SUITE" == "checkstyle" ]; then docker run -v $(pwd):$(pwd) -t koppor:docker-snapcraft-java-de sh -c "cd $(pwd) && LANG=C.UTF-8 LC_ALL=C.UTF-8 snapcraft && LANG=C.UTF-8 LC_ALL=C.UTF-8 snapcraft push *.snap --release edge"; fi
 
 after_failure:
   # show test results if build fails
